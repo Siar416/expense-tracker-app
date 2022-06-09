@@ -8,7 +8,7 @@ dotenv.config({ path: "./config/config.env" });
 
 connectDB();
 
-const transaction = require("./routes/transactions");
+const transactions = require("./routes/transactions");
 
 const app = express();
 
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/api/v1/transactions", transaction);
+app.use("/api/v1/transactions", transactions);
 
 const PORT = process.env.PORT || 8000;
 

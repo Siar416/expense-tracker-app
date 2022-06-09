@@ -19,10 +19,10 @@ export const GlobalProvider = ({ children }) => {
   // Actions
   async function getTransactions() {
     try {
-      const res = await axios.get("/api/v1/transactions/");
+      const res = await axios.get("/api/v1/transactions");
 
       dispatch({
-        type: "GET_TRANSACTION",
+        type: "GET_TRANSACTIONS",
         payload: res.data.data,
       });
     } catch (error) {
@@ -49,11 +49,26 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  function addTransaction(transaction) {
-    dispatch({
-      type: "ADD_TRANSACTION",
-      payload: transaction,
-    });
+  async function addTransaction(transaction) {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.post("/api/v1/transactions", transaction, config);
+
+      dispatch({
+        type: "ADD_TRANSACTION",
+        payload: res.data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "TRANSACTION_ERROR",
+        payload: error.response.data.error,
+      });
+    }
   }
 
   return (
